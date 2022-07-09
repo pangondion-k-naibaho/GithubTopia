@@ -197,8 +197,8 @@ object DummyList {
                 numberFollower = 0,
                 numberFollowing = 0,
                 urlProfilePict = "https://avatars.githubusercontent.com/u/61932036?v=4",
-                company = "",
-                location = "",
+                company = "-",
+                location = "Balige, Sumatera Utara",
                 listUserRepo = listOf(
                     UserRepo(
                         repoName = "android-mppl",

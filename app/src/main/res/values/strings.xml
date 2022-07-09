@@ -9,4 +9,6 @@
     <string name="detail_example_company">Example Company</string>
     <string name="detail_example_location">Example Location</string>
     <string name="user_repositories_title">User Repositories</string>
+    <string name="example_repo_name">Example Repo Name</string>
+    <string name="example_tool_name">Example Tool Name</string>
 </resources>
