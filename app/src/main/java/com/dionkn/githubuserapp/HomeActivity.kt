@@ -1,11 +1,8 @@
 package com.dionkn.githubuserapp
 
-import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dionkn.githubuserapp.Model.Adapter.ListGithubUsersAdapter
 import com.dionkn.githubuserapp.Model.Class.GithubUser

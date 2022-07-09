@@ -28,7 +28,7 @@
     <ImageView
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/Topia"
+        android:src="@drawable/topia"
         app:layout_constraintTop_toBottomOf="@+id/iv_octocat"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
