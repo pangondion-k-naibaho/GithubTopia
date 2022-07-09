@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">GithubTopia</string>
+    <string name="example_full_name">Example Full Name</string>
+    <string name="example_username">Example Username</string>
+    <string name="example_countfollower">x follower • y following</string>
+    <string name="detail_example_full_name">Example Full Name</string>
+    <string name="detail_example_username">Example Username</string>
+    <string name="detail_example_nof">Example Number of Followers</string>
+    <string name="detail_example_company">Example Company</string>
+    <string name="detail_example_location">Example Location</string>
+    <string name="user_repositories_title">User Repositories</string>
 </resources>

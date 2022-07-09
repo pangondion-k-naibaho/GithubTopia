@@ -42,7 +42,7 @@
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toEndOf="@id/iv_itemuser_pic"
             card_view:layout_constraintTop_toTopOf="@id/iv_itemuser_pic"
-            android:text="Full Name"/>
+            android:text="@string/example_full_name"/>
 
         <TextView
             android:id="@+id/tv_itemuser_username"
@@ -57,7 +57,7 @@
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toEndOf="@id/iv_itemuser_pic"
             card_view:layout_constraintTop_toBottomOf="@+id/tv_itemuser_fullname"
-            android:text="Username"/>
+            android:text="@string/example_username"/>
 
 
         <TextView
@@ -67,7 +67,7 @@
             android:textSize="18dp"
             android:gravity="center_vertical"
             android:drawableLeft="@drawable/ic_follower"
-            android:text="x follower \u2022 y following"
+            android:text="@string/example_countfollower"
             card_view:layout_constraintStart_toEndOf="@+id/iv_itemuser_pic"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/tv_itemuser_username"/>

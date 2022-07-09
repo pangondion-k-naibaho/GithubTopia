@@ -12,12 +12,4 @@
     <color name="black_github_3">#0d1110</color>
     <color name="grey">#636262</color>
     <color name="black_github_4">#161b22</color>
-    <color name="tool_html_theme">#e34c26</color>
-    <color name="tool_kotlin_theme">#A97BFF</color>
-    <color name="tool_javascript_theme">#f1e05a</color>
-    <color name="tool_java_theme">#b07219</color>
-    <color name="tool_python_theme">#3572A5</color>
-    <color name="tool_hack_theme">#878787</color>
-    <color name="tool_php_theme">#4F5D95</color>
-    <color name="repo_name">#58a6ff</color>
 </resources>
