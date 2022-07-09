@@ -6,18 +6,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.dionkn.githubuserapp.Model.Adapter.ListUserRepoAdapter
 import com.dionkn.githubuserapp.Model.Class.GithubUser
+import com.dionkn.githubuserapp.Model.Class.UserRepo
 import com.dionkn.githubuserapp.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailBinding
     private var parsedGithubUser = GithubUser()
+    private val listRepo = ArrayList<UserRepo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.detailRvrepo.setHasFixedSize(true)
+//        putIntoArrList()
         setupActionBar()
         initBundle()
         setDisplay()
@@ -27,6 +33,12 @@ class DetailActivity : AppCompatActivity() {
         const val EXTRA_GITHUB_USER = "EXTRA_GITHUB_USER"
         fun newIntent(context: Context, detailUser: GithubUser) : Intent = Intent(context, DetailActivity::class.java)
             .putExtra(EXTRA_GITHUB_USER, detailUser)
+    }
+
+    private fun putIntoArrList(){
+        parsedGithubUser.listUserRepo?.forEach {
+            listRepo.addAll(listOf(it))
+        }
     }
 
     private fun setupActionBar(){
@@ -51,6 +63,7 @@ class DetailActivity : AppCompatActivity() {
     private fun initBundle(){
         parsedGithubUser = intent.getParcelableExtra(EXTRA_GITHUB_USER) ?: GithubUser()
         Log.d(this.toString(), parsedGithubUser.toString())
+        putIntoArrList()
     }
 
     private fun setDisplay(){
@@ -62,5 +75,15 @@ class DetailActivity : AppCompatActivity() {
         binding.tvDetailuserNickname.text = parsedGithubUser.userName
         var unitedVariable = "${parsedGithubUser.numberFollower} follower \u2022 ${parsedGithubUser.numberFollowing} following"
         binding.tvDetailuserNumberfollower.text = unitedVariable
+        binding.tvDetailuserCompany.text = parsedGithubUser.company
+        binding.tvDetailuserLocation.text = parsedGithubUser.location
+
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerView(){
+        binding.detailRvrepo.layoutManager = LinearLayoutManager(this)
+        val listRepoAdapter = ListUserRepoAdapter(listRepo)
+        binding.detailRvrepo.adapter = listRepoAdapter
     }
 }

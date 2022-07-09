@@ -19,4 +19,5 @@
     <color name="tool_python_theme">#3572A5</color>
     <color name="tool_hack_theme">#878787</color>
     <color name="tool_php_theme">#4F5D95</color>
+    <color name="repo_name">#58a6ff</color>
 </resources>

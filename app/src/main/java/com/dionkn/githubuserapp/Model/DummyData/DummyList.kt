@@ -81,7 +81,7 @@ object DummyList {
                 numberFollower = 0,
                 numberFollowing = 0,
                 urlProfilePict = "https://avatars.githubusercontent.com/u/56783018?v=4",
-                company = "",
+                company = "Institut Tenologi Del",
                 location = "Balige, Sumatera Utara",
                 listUserRepo = listOf(
                     UserRepo(
@@ -149,7 +149,7 @@ object DummyList {
                 numberFollower = 0,
                 numberFollowing = 1,
                 urlProfilePict = "https://avatars.githubusercontent.com/u/38648534?v=4",
-                company = "NOBI",
+                company = "PT NOBI Putra Angkasa",
                 location = "Pematang Siantar",
                 listUserRepo = listOf(
                     UserRepo(
@@ -165,7 +165,7 @@ object DummyList {
                 numberFollower = 0,
                 numberFollowing = 0,
                 urlProfilePict = "https://avatars.githubusercontent.com/u/51378908?v=4",
-                company = "Upscale",
+                company = "Upscale.id",
                 location = "Jakarta",
                 listUserRepo = listOf(
                     UserRepo(
@@ -181,7 +181,7 @@ object DummyList {
                 numberFollowing = 0,
                 numberFollower = 0,
                 urlProfilePict = "https://avatars.githubusercontent.com/u/51202729?v=4",
-                company = "XL",
+                company = "PT XL Axiata",
                 location = "Jakarta",
                 listUserRepo = listOf(
                     UserRepo(

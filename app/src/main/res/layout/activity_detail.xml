@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetailActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_detailuser_pic"
@@ -25,8 +29,8 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
-        android:layout_marginStart="50dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_detailuser_pic"/>
 
     <TextView
@@ -38,8 +42,8 @@
         android:textStyle="bold"
         android:layout_marginTop="20dp"
         android:text="Example Nickname"
-        android:layout_marginStart="50dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_detailuser_fullname"/>
 
     <TextView
@@ -50,21 +54,57 @@
         android:text="Example Number of Followers"
         android:textSize="20sp"
         android:drawableLeft="@drawable/ic_follower"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_detailuser_nickname"/>
+    <TextView
+        android:id="@+id/tv_detailuser_company"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Example Company"
+        android:textSize="20sp"
+        android:drawableLeft="@drawable/ic_company"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_detailuser_numberfollower"/>
+
+    <TextView
+        android:id="@+id/tv_detailuser_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Example Location"
+        android:textSize="20sp"
+        android:drawableLeft="@drawable/ic_location"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_detailuser_company"/>
 
     <TextView
         android:id="@+id/tv_detailuser_repo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Example Reposistories"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
         android:textSize="22sp"
         android:drawableLeft="@drawable/ic_repo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_detailuser_numberfollower"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_detailuser_location"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/detail_rvrepo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_detailuser_repo"
+        tools:listitem="@layout/rv_item_repo"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
