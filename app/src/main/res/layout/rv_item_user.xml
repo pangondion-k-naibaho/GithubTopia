@@ -19,8 +19,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_itemuser_pic"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
@@ -33,44 +33,65 @@
             android:id="@+id/tv_itemuser_fullname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_toEndOf="@+id/iv_itemuser_pic"
-            android:textSize="22sp"
+            android:gravity="center"
+            android:text="@string/example_full_name"
             android:textStyle="bold"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toEndOf="@id/iv_itemuser_pic"
-            card_view:layout_constraintTop_toTopOf="@id/iv_itemuser_pic"
-            android:text="@string/example_full_name"/>
+            card_view:layout_constraintHorizontal_bias="0.115"
+            card_view:layout_constraintStart_toEndOf="@+id/iv_itemuser_pic"
+            card_view:layout_constraintTop_toTopOf="@+id/iv_itemuser_pic" />
 
-        <TextView
+
+        <!--<TextView
             android:id="@+id/tv_itemuser_username"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:gravity="center"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_toEndOf="@id/iv_itemuser_pic"
-            android:textSize="20sp"
+            android:gravity="center"
+            android:text="@string/example_username"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toEndOf="@id/iv_itemuser_pic"
-            card_view:layout_constraintTop_toBottomOf="@+id/tv_itemuser_fullname"
-            android:text="@string/example_username"/>
+            card_view:layout_constraintHorizontal_bias="0.147"
+            card_view:layout_constraintStart_toEndOf="@+id/iv_itemuser_pic"
+            card_view:layout_constraintTop_toBottomOf="@+id/tv_itemuser_fullname" />-->
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:orientation="horizontal"
+            card_view:layout_constraintHorizontal_bias="0.140"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toEndOf="@+id/iv_itemuser_pic"
+            card_view:layout_constraintTop_toBottomOf="@+id/tv_itemuser_fullname">
 
-        <TextView
+            <ImageView
+                android:id="@+id/iv_icItemFollowing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_follower"
+                />
+
+            <TextView
+                android:id="@+id/tv_itemuser_countfollower"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/example_countfollower"/>
+
+        </LinearLayout>
+        <!--<TextView
             android:id="@+id/tv_itemuser_countfollower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
             android:gravity="center_vertical"
-            android:drawableLeft="@drawable/ic_follower"
             android:text="@string/example_countfollower"
-            card_view:layout_constraintStart_toEndOf="@+id/iv_itemuser_pic"
+            card_view:layout_constraintBottom_toBottomOf="@+id/iv_itemuser_pic"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/tv_itemuser_username"/>
+            card_view:layout_constraintHorizontal_bias="0.117"
+            card_view:layout_constraintStart_toEndOf="@+id/iv_itemuser_pic"
+            card_view:layout_constraintTop_toBottomOf="@+id/tv_itemuser_fullname" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -32,7 +32,6 @@ class ListGithubUsersAdapter(private val listUser: ArrayList<GithubUser>) : Recy
             "" -> userName
             else -> fullName
         }
-        binding.tvItemuserUsername.text = userName
 
         var united = "$numberFollower follower \u2022 $numberFollowing following"
         binding.tvItemuserCountfollower.text = united
