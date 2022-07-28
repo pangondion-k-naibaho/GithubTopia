@@ -6,45 +6,42 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dionkn.githubuserapp.Model.Class.GithubUser
+import com.dionkn.githubuserapp.Model.Response.UserGithubResponse
+import com.dionkn.githubuserapp.R
 import com.dionkn.githubuserapp.databinding.RvItemUserBinding
 
-class ListGithubUsersAdapter(private val listUser: ArrayList<GithubUser>) : RecyclerView.Adapter<ListGithubUsersAdapter.ViewHolder>() {
-    private lateinit var onItemClickCallback : OnItemClickCallback
-    lateinit var binding: RvItemUserBinding
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+class ListGithubUsersAdapter(
+    var data : ArrayList<UserGithubResponse>,
+    private val listener: ItemListener
+) : RecyclerView.Adapter<ListGithubUsersAdapter.UserItemHolder>()
+{
+    interface ItemListener{
+        fun onItemClicked(item: UserGithubResponse)
     }
 
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback){
-        this.onItemClickCallback = onItemClickCallback
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = RvItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding.cvUsers)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val(fullName, userName, userBio, numberFollower, numberFollowing, urlProfilePict) = listUser[position]
-
-        Glide.with(holder.itemView).load(urlProfilePict).into(binding.ivItemuserPic)
-        binding.tvItemuserFullname.text = when(fullName){
-            "" -> userName
-            else -> fullName
+    inner class UserItemHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        fun bind(item: UserGithubResponse, listener: ItemListener) = with(itemView){
+            val binding = RvItemUserBinding.bind(itemView)
+            binding.apply {
+                tvItemuserFullname.text = item.login
+                val followers = "${item.followers} followers • ${item.following} following"
+                tvItemuserCountfollower.text = followers
+            }
+            binding.root.setOnClickListener {
+                item?.let { it -> listener.onItemClicked(it) }
+            }
         }
-
-        var united = "$numberFollower follower \u2022 $numberFollowing following"
-        binding.tvItemuserCountfollower.text = united
-
-        holder.itemView.setOnClickListener {
-            onItemClickCallback.onItemClicked(listUser[position])
-        }
-
     }
 
-    override fun getItemCount(): Int = listUser.size
-
-    interface OnItemClickCallback{
-        fun onItemClicked(data: GithubUser)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserItemHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.rv_item_user, parent, false)
+        return UserItemHolder(view)
     }
+
+    override fun onBindViewHolder(holder: UserItemHolder, position: Int) {
+        holder.bind(data[position], listener)
+    }
+
+    override fun getItemCount(): Int = data.size
+
 }
