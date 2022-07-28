@@ -10,13 +10,17 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.dionkn.githubuserapp.Model.Adapter.DetailFragmentAdapter
 import com.dionkn.githubuserapp.Model.Adapter.ListUserRepoAdapter
 import com.dionkn.githubuserapp.Model.Class.GithubUser
 import com.dionkn.githubuserapp.Model.Class.UserRepo
 import com.dionkn.githubuserapp.Model.Response.UserGithubResponse
 import com.dionkn.githubuserapp.ViewModel.DetailViewModel
 import com.dionkn.githubuserapp.databinding.ActivityDetailBinding
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailActivity : AppCompatActivity() {
     private val TAG = DetailActivity::class.java.simpleName
@@ -28,16 +32,20 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        putIntoArrList()
+
         setupActionBar()
         initBundle()
-//        setDisplay()
     }
 
     companion object{
         const val EXTRA_GITHUB_USER = "EXTRA_GITHUB_USER"
         fun newIntent(context: Context, usernameDelivered: String) : Intent = Intent(context, DetailActivity::class.java)
             .putExtra(EXTRA_GITHUB_USER, usernameDelivered)
+
+        private val TAB_TITLES = arrayOf(
+            "Followers",
+            "Following"
+        )
     }
 
 
@@ -84,5 +92,18 @@ class DetailActivity : AppCompatActivity() {
             tvDetailuserCompany.text = userGithub.company
             tvDetailuserLocation.text = userGithub.location
         }
+        val arrayTitle = arrayOf(
+            "Followers (${userGithub.followers})",
+            "Following (${userGithub.following})"
+        )
+        setupFragment(userGithub, arrayTitle)
+    }
+
+    private fun setupFragment(userGithub: UserGithubResponse, arrayTitle: Array<String>){
+        val detailPagerAdapter = DetailFragmentAdapter(this, userGithub)
+        binding.vpDetailUser.adapter = detailPagerAdapter
+        TabLayoutMediator(binding.tlDetailUser, binding.vpDetailUser){ tab, position ->
+            tab.text = arrayTitle[position]
+        }.attach()
     }
 }

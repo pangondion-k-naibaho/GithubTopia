@@ -7,11 +7,11 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 
 interface ApiService {
-    @Headers("Authorization: Bearer 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")
+    @Headers("Authorization: Bearer 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")
     @GET("/users")
     fun getGithubUsers(): Call<List<UserGithubResponse>>
 
-    @Headers("Authorization: Bearer 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")
+    @Headers("Authorization: Bearer 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")
     @GET("/users/{login}")
     fun getDetailUsers(
         @Path("login") login : String
