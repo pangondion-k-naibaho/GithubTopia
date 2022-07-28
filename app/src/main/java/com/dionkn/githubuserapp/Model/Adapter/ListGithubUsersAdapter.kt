@@ -26,6 +26,9 @@ class ListGithubUsersAdapter(
                 tvItemuserFullname.text = item.login
                 val followers = "${item.followers} followers • ${item.following} following"
                 tvItemuserCountfollower.text = followers
+
+                Glide.with(context).load(item.avatar_url)
+                    .into(ivItemuserPic)
             }
             binding.root.setOnClickListener {
                 item?.let { it -> listener.onItemClicked(it) }
