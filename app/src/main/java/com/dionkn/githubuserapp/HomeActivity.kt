@@ -43,12 +43,21 @@ class HomeActivity : AppCompatActivity() {
         val adapter = ListGithubUsersAdapter(arrListUserData, object: ListGithubUsersAdapter.ItemListener{
             override fun onItemClicked(item: UserGithubResponse) {
                 Log.d(TAG, "item : $item")
+                showDetailUser(item.login)
             }
 
         })
 
         binding.homeRvusers.adapter = adapter
 
+    }
+
+    private fun showDetailUser(username: String){
+        startActivity(
+            DetailActivity.newIntent(this, username).apply {
+                putExtra(EXTRA_GITHUB_USER, username)
+            }
+        )
     }
 
 }
