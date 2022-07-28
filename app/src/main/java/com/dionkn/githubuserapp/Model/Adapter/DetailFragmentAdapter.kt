@@ -8,6 +8,7 @@ import com.dionkn.githubuserapp.Fragment.FollowingFragment
 import com.dionkn.githubuserapp.Model.Response.UserGithubResponse
 
 class DetailFragmentAdapter(activity: AppCompatActivity, userGithubResponse: UserGithubResponse): FragmentStateAdapter(activity) {
+    private val deliveredUsername = userGithubResponse.login
     override fun getItemCount(): Int {
         return 2
     }
@@ -15,8 +16,8 @@ class DetailFragmentAdapter(activity: AppCompatActivity, userGithubResponse: Use
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment ?= null
         when(position){
-            0 -> fragment = FollowersFragment()
-            1 -> fragment = FollowingFragment()
+            0 -> fragment = FollowersFragment.newInstance(deliveredUsername)
+            1 -> fragment = FollowingFragment.newInstance(deliveredUsername)
         }
         return fragment as Fragment
     }

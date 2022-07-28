@@ -7,7 +7,6 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dionkn.githubuserapp.Model.Adapter.ListGithubUsersAdapter
 import com.dionkn.githubuserapp.Model.Class.GithubUser
-import com.dionkn.githubuserapp.Model.DummyData.DummyList.getGithubUser
 import com.dionkn.githubuserapp.Model.Response.UserGithubResponse
 import com.dionkn.githubuserapp.ViewModel.HomeViewModel
 import com.dionkn.githubuserapp.databinding.ActivityHomeBinding

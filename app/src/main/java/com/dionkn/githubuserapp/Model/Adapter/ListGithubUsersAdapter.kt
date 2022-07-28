@@ -16,7 +16,7 @@ class ListGithubUsersAdapter(
 ) : RecyclerView.Adapter<ListGithubUsersAdapter.UserItemHolder>()
 {
     interface ItemListener{
-        fun onItemClicked(item: UserGithubResponse)
+        fun onItemClicked(item: UserGithubResponse){}
     }
 
     inner class UserItemHolder(itemView: View): RecyclerView.ViewHolder(itemView){

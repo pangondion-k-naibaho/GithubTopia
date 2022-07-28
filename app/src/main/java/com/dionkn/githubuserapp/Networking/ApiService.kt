@@ -16,4 +16,17 @@ interface ApiService {
     fun getDetailUsers(
         @Path("login") login : String
     ): Call<UserGithubResponse>
+
+    @Headers("Authorization: Bearer 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")
+    @GET("/users/{username}/followers")
+    fun getUserFollowers(
+        @Path("username") login : String
+    ): Call<List<UserGithubResponse>>
+
+    @Headers("Authorization: Bearer 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")
+    @GET("/users/{username}/following")
+    fun getUserFollowing(
+        @Path("username") login : String
+    ): Call<List<UserGithubResponse>>
+
 }
