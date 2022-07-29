@@ -88,9 +88,18 @@ class DetailActivity : AppCompatActivity() {
                 .into(ivDetailuserPic)
 
             tvDetailuserFullname.text = userGithub.login
-            tvDetailuserNickname.text = userGithub.name
-            tvDetailuserCompany.text = userGithub.company
-            tvDetailuserLocation.text = userGithub.location
+            tvDetailuserNickname.text = when(userGithub.name){
+                null, "" -> " - "
+                else -> userGithub.name
+            }
+            tvDetailuserCompany.text = when(userGithub.company){
+                null, "" -> " - "
+                else -> " ${userGithub.company} "
+            }
+            tvDetailuserLocation.text = when(userGithub.location){
+                null, "" -> " - "
+                else -> " ${userGithub.location} "
+            }
         }
         val arrayTitle = arrayOf(
             "Followers (${userGithub.followers})",
