@@ -14,6 +14,12 @@ class DetailViewModel: ViewModel() {
     private val _detailUser = MutableLiveData<UserGithubResponse>()
     val detailUser : LiveData<UserGithubResponse> = _detailUser
 
+    private var _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private var _isFail = MutableLiveData<Boolean>()
+    val isFail: LiveData<Boolean> = _isFail
+
      fun getDetailUser(deliveredUsername: String){
         val client = ApiConfig.getApiService().getDetailUsers(deliveredUsername)
         client.enqueue(object: retrofit2.Callback<UserGithubResponse>{
@@ -21,14 +27,18 @@ class DetailViewModel: ViewModel() {
                 call: Call<UserGithubResponse>,
                 response: Response<UserGithubResponse>
             ) {
+                _isLoading.value = false
                 if(response.isSuccessful){
                     _detailUser.value = response.body()
                 }else {
+                    _isFail.value = true
                     Log.e(TAG, "onFailure : ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<UserGithubResponse>, t: Throwable) {
+                _isLoading.value = false
+                _isFail.value = true
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
 

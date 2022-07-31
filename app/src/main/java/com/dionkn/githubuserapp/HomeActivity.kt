@@ -8,18 +8,21 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dionkn.githubuserapp.Model.Adapter.ListGithubUsersAdapter
 import com.dionkn.githubuserapp.Model.Class.GithubUser
+import com.dionkn.githubuserapp.Model.Item.PopupDialogListener
+import com.dionkn.githubuserapp.Model.Item.showPopupDialog
 import com.dionkn.githubuserapp.Model.Response.UserGithubResponse
 import com.dionkn.githubuserapp.ViewModel.HomeViewModel
 import com.dionkn.githubuserapp.databinding.ActivityHomeBinding
+import java.util.*
 
 class HomeActivity : AppCompatActivity() {
 
     private val TAG = HomeActivity::class.java.simpleName
     private lateinit var binding : ActivityHomeBinding
-    private val listUsers = ArrayList<GithubUser>()
     private var EXTRA_GITHUB_USER = "EXTRA_GITHUB_USER"
     private val homeViewModel by viewModels<HomeViewModel>()
     private var arrListUserData= ArrayList<UserGithubResponse>()
@@ -36,13 +39,41 @@ class HomeActivity : AppCompatActivity() {
         binding.homeSearchRvusers.setHasFixedSize(true)
         binding.homeSearchRvusers.layoutManager = LinearLayoutManager(this)
 
+
         homeViewModel.getUserGithub()
         homeViewModel.listUserGithub.observe(this,{ listUsers ->
             setUserData(listUsers)
         })
 
+        homeViewModel.isLoading.observe(this, {
+            showLoading(it)
+        })
+
+        homeViewModel.isFail.observe(this, {
+            setUpWarning(it)
+        })
+
         searchBarSetUp()
 
+    }
+
+    private fun setUpWarning(isFail: Boolean){
+        if(isFail == true){
+            this@HomeActivity.showPopupDialog(
+                AppCompatResources.getDrawable(this@HomeActivity,R.drawable.octocat_warning)!!,
+                "We're sorry, there seems a problem",
+                "OK",
+                object: PopupDialogListener{
+                    override fun onClickListener() {
+                        this@HomeActivity.closeOptionsMenu()
+                    }
+                }
+            )
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean){
+        binding.pbMain.visibility = if(isLoading) View.VISIBLE else View.GONE
     }
 
     private fun setUserData(userData: List<UserGithubResponse>){
@@ -56,9 +87,7 @@ class HomeActivity : AppCompatActivity() {
             }
 
         })
-
         binding.homeAllRvusers.adapter = adapter
-
     }
 
     private fun showDetailUser(username: String){
@@ -90,6 +119,7 @@ class HomeActivity : AppCompatActivity() {
                     true -> {
                         homeSearchRvusers.visibility = View.GONE
                         homeAllRvusers.visibility = View.VISIBLE
+                        arrListSearchedUserData.clear()
                     }
                 }
             }
@@ -113,6 +143,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setSearchedUserData(userData: List<UserGithubResponse>){
+        arrListSearchedUserData.clear()
         userData.forEach {
             arrListSearchedUserData.addAll(listOf(it))
         }

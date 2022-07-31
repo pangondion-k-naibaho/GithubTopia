@@ -2,7 +2,7 @@
     <string name="app_name">GithubTopia</string>
     <string name="example_full_name">Example Full Name</string>
     <string name="example_username">Example Username</string>
-    <string name="example_countfollower">x follower • y following</string>
+    <string name="example_countfollower">x id • y node_id</string>
     <string name="detail_example_full_name">Example Full Name</string>
     <string name="detail_example_username">Example Username</string>
     <string name="detail_example_nof">Example Number of Followers</string>
@@ -11,4 +11,5 @@
     <string name="user_repositories_title">User Repositories</string>
     <string name="example_repo_name">Example Repo Name</string>
     <string name="example_tool_name">Example Tool Name</string>
+    <string name="example_warning">Example Warning</string>
 </resources>

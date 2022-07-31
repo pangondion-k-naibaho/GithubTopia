@@ -19,26 +19,36 @@ class HomeViewModel: ViewModel() {
     private var _listSearchedUser = MutableLiveData<List<UserGithubResponse>>()
     val listSearchedUser : LiveData<List<UserGithubResponse>> = _listSearchedUser
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _isFail= MutableLiveData<Boolean>()
+    val isFail: LiveData<Boolean> = _isFail
+
     companion object{
         private const val TOKEN = "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"
     }
 
     fun getUserGithub(){
-        val client = ApiConfig.getApiService().getGithubUsers()
-        client.enqueue(object: retrofit2.Callback<List<UserGithubResponse>>{
+        val client1 = ApiConfig.getApiService().getGithubUsers()
+        client1.enqueue(object: retrofit2.Callback<List<UserGithubResponse>>{
             override fun onResponse(
                 call: Call<List<UserGithubResponse>>,
                 response: Response<List<UserGithubResponse>>
             ) {
+                _isLoading.value = false
                 if(response.isSuccessful){
                     _listUserGithub.value = response.body()
                     Log.d(TAG, "Success")
                 }else{
+                    _isFail.value = true
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<List<UserGithubResponse>>, t: Throwable) {
+                _isLoading.value = false
+                _isFail.value = true
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
 
@@ -53,6 +63,7 @@ class HomeViewModel: ViewModel() {
                 call: Call<SearchedUserResponse>,
                 response: Response<SearchedUserResponse>
             ) {
+                _isLoading.value = false
                 if (response.isSuccessful){
                     _listSearchedUser.value = response.body()?.items
                     Log.d(TAG, "Success")
@@ -62,9 +73,11 @@ class HomeViewModel: ViewModel() {
             }
 
             override fun onFailure(call: Call<SearchedUserResponse>, t: Throwable) {
+                _isLoading.value = false
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
 
         })
     }
+
 }

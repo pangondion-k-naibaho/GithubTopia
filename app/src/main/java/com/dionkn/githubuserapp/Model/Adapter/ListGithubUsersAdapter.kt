@@ -11,8 +11,8 @@ import com.dionkn.githubuserapp.R
 import com.dionkn.githubuserapp.databinding.RvItemUserBinding
 
 class ListGithubUsersAdapter(
-    var data : ArrayList<UserGithubResponse>,
-    private val listener: ItemListener
+    var data : ArrayList<UserGithubResponse> ?= null,
+    private val listener: ItemListener ?= null
 ) : RecyclerView.Adapter<ListGithubUsersAdapter.UserItemHolder>()
 {
     interface ItemListener{
@@ -24,7 +24,7 @@ class ListGithubUsersAdapter(
             val binding = RvItemUserBinding.bind(itemView)
             binding.apply {
                 tvItemuserFullname.text = item.login
-                val followers = "${item.followers} followers • ${item.following} following"
+                val followers = "id ${item.id} • node_id ${maskLastDigits(item.node_id, 5, "*")}"
                 tvItemuserCountfollower.text = followers
 
                 Glide.with(context).load(item.avatar_url)
@@ -36,15 +36,22 @@ class ListGithubUsersAdapter(
         }
     }
 
+    fun maskLastDigits(inputStr: String?, numberOfMask: Int, symbol: String):String{
+        var mask = ""
+        if(inputStr == null) return "-"
+        for (x in 0 until numberOfMask) mask += symbol
+        return inputStr.substring(0, numberOfMask-1) + mask
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserItemHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.rv_item_user, parent, false)
         return UserItemHolder(view)
     }
 
     override fun onBindViewHolder(holder: UserItemHolder, position: Int) {
-        holder.bind(data[position], listener)
+        holder.bind(data?.get(position)!!, listener!!)
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = data?.size!!
 
 }

@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -16,6 +18,8 @@ import com.dionkn.githubuserapp.Model.Adapter.DetailFragmentAdapter
 import com.dionkn.githubuserapp.Model.Adapter.ListUserRepoAdapter
 import com.dionkn.githubuserapp.Model.Class.GithubUser
 import com.dionkn.githubuserapp.Model.Class.UserRepo
+import com.dionkn.githubuserapp.Model.Item.PopupDialogListener
+import com.dionkn.githubuserapp.Model.Item.showPopupDialog
 import com.dionkn.githubuserapp.Model.Response.UserGithubResponse
 import com.dionkn.githubuserapp.ViewModel.DetailViewModel
 import com.dionkn.githubuserapp.databinding.ActivityDetailBinding
@@ -28,10 +32,19 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var deliveredUsername : String
     private val detailViewModel by viewModels<DetailViewModel>()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        detailViewModel.isLoading.observe(this, {
+            setUpLoading(it)
+        })
+
+        detailViewModel.isFail.observe(this, {
+            setUpWarning(it)
+        })
 
         setupActionBar()
         initBundle()
@@ -41,11 +54,6 @@ class DetailActivity : AppCompatActivity() {
         const val EXTRA_GITHUB_USER = "EXTRA_GITHUB_USER"
         fun newIntent(context: Context, usernameDelivered: String) : Intent = Intent(context, DetailActivity::class.java)
             .putExtra(EXTRA_GITHUB_USER, usernameDelivered)
-
-        private val TAB_TITLES = arrayOf(
-            "Followers",
-            "Following"
-        )
     }
 
 
@@ -55,7 +63,6 @@ class DetailActivity : AppCompatActivity() {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_back_white)
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setTitle("Detail User")
-            actionBar.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
     }
 
@@ -73,6 +80,25 @@ class DetailActivity : AppCompatActivity() {
         deliveredUsername = intent.getStringExtra(EXTRA_GITHUB_USER)!!
         Log.d(TAG, "deliveredUsername: ${deliveredUsername}")
         getUser(deliveredUsername)
+    }
+
+    private fun setUpLoading(isLoading: Boolean){
+        binding.pbDetail.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun setUpWarning(isFail: Boolean){
+        if(isFail == true){
+            this@DetailActivity.showPopupDialog(
+                AppCompatResources.getDrawable(this@DetailActivity, R.drawable.octocat_warning)!!,
+                "We're sorry, there seems a problem",
+                "OK",
+                object: PopupDialogListener{
+                    override fun onClickListener() {
+                        this@DetailActivity.closeOptionsMenu()
+                    }
+                }
+            )
+        }
     }
 
     private fun getUser(userName: String){
@@ -109,10 +135,13 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setupFragment(userGithub: UserGithubResponse, arrayTitle: Array<String>){
-        val detailPagerAdapter = DetailFragmentAdapter(this, userGithub)
-        binding.vpDetailUser.adapter = detailPagerAdapter
-        TabLayoutMediator(binding.tlDetailUser, binding.vpDetailUser){ tab, position ->
-            tab.text = arrayTitle[position]
-        }.attach()
+        with(binding){
+            val detailPagerAdapter = DetailFragmentAdapter(this@DetailActivity, userGithub)
+            vpDetailUser.adapter = detailPagerAdapter
+            TabLayoutMediator(tlDetailUser, vpDetailUser, false, true){ tab, position ->
+                tab.text = arrayTitle[position]
+            }.attach()
+        }
     }
+
 }
