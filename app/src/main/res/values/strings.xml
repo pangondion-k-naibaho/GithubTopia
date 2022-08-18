@@ -12,4 +12,14 @@
     <string name="example_repo_name">Example Repo Name</string>
     <string name="example_tool_name">Example Tool Name</string>
     <string name="example_warning">Example Warning</string>
+    <string name="search_helper">Cari user disini</string>
+    <string name="empty_list_favorite_wording">Favorited user is empty. Favorite the user first, then you can see the list of your favorite user here</string>
+    <string name="empty_list_favorite_roast">Sorry, looks like the list is empty, like your heart</string>
+    <string name="general_settings">General Settings</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="switch_off">OFF</string>
+    <string name="switch_on">ON</string>
+    <string name="about">About</string>
+    <string name="about_title">GithubTopia - Created by PKN (Ver 1.3.0)</string>
+    <string name="about_desc">Berdiri sejak tidak kebagian kursi</string>
 </resources>

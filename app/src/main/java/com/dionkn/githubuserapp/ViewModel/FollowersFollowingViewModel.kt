@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dionkn.githubuserapp.Model.Response.UserGithubResponse
-import com.dionkn.githubuserapp.Networking.ApiConfig
+import com.dionkn.githubuserapp.Data.Remote.ApiConfig
 import retrofit2.Call
 import retrofit2.Response
 

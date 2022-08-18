@@ -1,6 +1,7 @@
-package com.dionkn.githubuserapp.Networking
+package com.dionkn.githubuserapp.Data.Remote
 
 import com.dionkn.githubuserapp.BuildConfig
+import com.dionkn.githubuserapp.BuildConfig.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -18,7 +19,7 @@ class ApiConfig {
                 .addInterceptor(loggingInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()

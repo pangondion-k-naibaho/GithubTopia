@@ -4,50 +4,55 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.dionkn.githubuserapp.Util.SettingPreferences
 import com.dionkn.githubuserapp.Util.ViewModelFactory
 import com.dionkn.githubuserapp.ViewModel.SettingViewModel
-import com.dionkn.githubuserapp.databinding.ActivityMainBinding
+import com.dionkn.githubuserapp.databinding.ActivitySettingBinding
+import androidx.datastore.preferences.core.Preferences
 
-class MainActivity : AppCompatActivity() {
+class SettingActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener {
+    private val TAG = SettingActivity::class.java.simpleName
 
-    private var _binding : ActivityMainBinding?= null
+    private var _binding : ActivitySettingBinding?= null
     private val binding get() = _binding!!
     private lateinit var settingViewModel: SettingViewModel
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.hide()
 
-        setUpDarkTheme()
-        Handler().postDelayed(
-            {
-                val intent = Intent(this@MainActivity, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
-            }, 3000
-        )
-
-    }
-
-    private fun setUpDarkTheme(){
-        val pref = SettingPreferences.getInstance(dataStore = dataStore)
+        val pref = SettingPreferences.getInstance(dataStore)
         settingViewModel = ViewModelProvider(this, ViewModelFactory(pref))[SettingViewModel::class.java]
-        settingViewModel.getThemeSettings().observe(this, { isDarkMode ->
+        settingViewModel.getThemeSettings().observe(this,{ isDarkMode ->
             if(isDarkMode){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                binding.switchSetting1.isChecked = true
             }else{
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                binding.switchSetting1.isChecked = false
             }
         })
+
+        binding.switchSetting1.setOnCheckedChangeListener(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    companion object{
+        fun newIntent(context: Context): Intent = Intent(context, SettingActivity::class.java)
+    }
+
+    override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+        settingViewModel.saveThemeSetting(p1)
     }
 }

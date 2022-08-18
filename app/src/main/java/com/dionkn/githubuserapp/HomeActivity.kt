@@ -1,21 +1,31 @@
 package com.dionkn.githubuserapp
 
+import android.content.Context
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.MotionEvent
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dionkn.githubuserapp.Model.Adapter.ListGithubUsersAdapter
-import com.dionkn.githubuserapp.Model.Class.GithubUser
 import com.dionkn.githubuserapp.Model.Item.PopupDialogListener
 import com.dionkn.githubuserapp.Model.Item.showPopupDialog
 import com.dionkn.githubuserapp.Model.Response.UserGithubResponse
+import com.dionkn.githubuserapp.Model.Item.InputSearchView
+import com.dionkn.githubuserapp.Util.SettingPreferences
+import com.dionkn.githubuserapp.Util.ViewModelFactory
 import com.dionkn.githubuserapp.ViewModel.HomeViewModel
+import com.dionkn.githubuserapp.ViewModel.SettingViewModel
 import com.dionkn.githubuserapp.databinding.ActivityHomeBinding
 import java.util.*
 
@@ -23,15 +33,20 @@ class HomeActivity : AppCompatActivity() {
 
     private val TAG = HomeActivity::class.java.simpleName
     private lateinit var binding : ActivityHomeBinding
-    private var EXTRA_GITHUB_USER = "EXTRA_GITHUB_USER"
+
     private val homeViewModel by viewModels<HomeViewModel>()
     private var arrListUserData= ArrayList<UserGithubResponse>()
     private var arrListSearchedUserData= ArrayList<UserGithubResponse>()
+
+    private lateinit var settingViewModel: SettingViewModel
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setProgressBarColor()
 
         binding.homeAllRvusers.setHasFixedSize(true)
         binding.homeAllRvusers.layoutManager = LinearLayoutManager(this)
@@ -55,6 +70,48 @@ class HomeActivity : AppCompatActivity() {
 
         searchBarSetUp()
 
+    }
+
+    companion object{
+        const val EXTRA_GITHUB_USER = "EXTRA_GITHUB_USER"
+        const val EXTRA_STATE = "EXTRA_STATE"
+    }
+
+    private fun setProgressBarColor(){
+        val pref = SettingPreferences.getInstance(dataStore)
+        settingViewModel = ViewModelProvider(this, ViewModelFactory(pref))[SettingViewModel::class.java]
+        settingViewModel.getThemeSettings().observe(this, { isDarkMode ->
+            if(isDarkMode){
+                binding.pbMain.indeterminateDrawable.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.MULTIPLY)
+            }else{
+                binding.pbMain.indeterminateDrawable.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.MULTIPLY)
+            }
+        })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val menuInflater = menuInflater
+        menuInflater.inflate(R.menu.home_menu, menu)
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.menu_favorite ->{
+                startActivity(
+                    FavoriteActivity.newIntent(this@HomeActivity)
+                )
+                true
+            }
+            R.id.menu_setting->{
+                startActivity(
+                    SettingActivity.newIntent(this@HomeActivity)
+                )
+                true
+            }
+            else -> true
+        }
     }
 
     private fun setUpWarning(isFail: Boolean){
@@ -83,53 +140,48 @@ class HomeActivity : AppCompatActivity() {
         val adapter = ListGithubUsersAdapter(arrListUserData, object: ListGithubUsersAdapter.ItemListener{
             override fun onItemClicked(item: UserGithubResponse) {
                 Log.d(TAG, "item : $item")
-                showDetailUser(item.login)
+                showDetailUser(item)
             }
 
         })
         binding.homeAllRvusers.adapter = adapter
     }
 
-    private fun showDetailUser(username: String){
+    private fun showDetailUser(user: UserGithubResponse){
         startActivity(
-            DetailActivity.newIntent(this, username).apply {
-                putExtra(EXTRA_GITHUB_USER, username)
+            DetailActivity.newIntent(this, user, true).apply {
+                putExtra(EXTRA_GITHUB_USER, user)
+                putExtra(EXTRA_STATE, true)
             }
         )
     }
 
     private fun searchBarSetUp(){
-        with(binding){
-            etSearchHome.addTextChangedListener(object: TextWatcher{
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        binding.isvHome.apply {
+            setTextHelper(getString(R.string.search_helper))
+            setListener(object: InputSearchView.InputSearchListener{
+                override fun onClickSearch() {
+                    binding.homeAllRvusers.visibility = View.GONE
+                    binding.homeSearchRvusers.visibility = View.GONE
+                    userSearch(getText())
+                }
 
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onClearSearch() {
+                    clearText()
+                    with(binding){
+                        when(homeSearchRvusers.visibility == View.VISIBLE){
+                            true -> {
+                                arrListSearchedUserData.clear()
+                                homeSearchRvusers.visibility = View.GONE
+                                homeAllRvusers.visibility = View.VISIBLE
+                            }
+                        }
+                    }
 
-                override fun afterTextChanged(p0: Editable?) {
-                    if(etSearchHome.text.toString().length > 0){
-                        ivClearHome.visibility = View.VISIBLE
-                    }else ivClearHome.visibility = View.GONE
                 }
 
             })
-
-            ivClearHome.setOnClickListener {
-                etSearchHome.text.clear()
-                when(homeSearchRvusers.visibility == View.VISIBLE){
-                    true -> {
-                        homeSearchRvusers.visibility = View.GONE
-                        homeAllRvusers.visibility = View.VISIBLE
-                        arrListSearchedUserData.clear()
-                    }
-                }
-            }
-
-            ivSearchHome.setOnClickListener {
-                Log.d(TAG, "Search : ${etSearchHome.text.toString().toLowerCase()}")
-                userSearch(etSearchHome.text.toString().toLowerCase())
-            }
         }
-
     }
 
     private fun userSearch(text: String){
@@ -151,10 +203,9 @@ class HomeActivity : AppCompatActivity() {
         val adapter = ListGithubUsersAdapter(arrListSearchedUserData, object: ListGithubUsersAdapter.ItemListener{
             override fun onItemClicked(item: UserGithubResponse) {
                 Log.d(TAG, "item : $item")
-                showDetailUser(item.login)
+                showDetailUser(item)
             }
         })
-
         binding.homeSearchRvusers.adapter = adapter
     }
 

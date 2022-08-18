@@ -9,6 +9,10 @@
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_arrow_back_black.xml" value="0.206" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_back_white.xml" value="0.156" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_baseline_people_alt_24.xml" value="0.1" />
+        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_clear_black.xml" value="0.164" />
+        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_favorite_full.xml" value="0.1" />
+        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_favorite_magenta.xml" value="0.1" />
+        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_favorite_not_full.xml" value="0.1" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_follower.xml" value="0.151" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_location.xml" value="0.156" />
@@ -16,18 +20,25 @@
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_open_book.xml" value="0.156" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_repo.xml" value="0.156" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_repo_outline.xml" value="0.1" />
+        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_search_black.xml" value="0.164" />
+        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_settings.xml" value="0.1" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_tool_hack.xml" value="0.156" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_tool_html.xml" value="0.156" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/drawable/ic_tool_kotlin.xml" value="0.156" />
-        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/activity_detail.xml" value="0.176" />
+        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/activity_detail.xml" value="0.4" />
+        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/activity_favorite.xml" value="0.21965579710144928" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/activity_home.xml" value="0.264" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/activity_list_user.xml" value="0.24375" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/activity_setting.xml" value="0.264" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/fragment_followers.xml" value="0.1" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/fragment_following.xml" value="0.1" />
+        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/layout_search.xml" value="0.264" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/popup_onfailure.xml" value="0.176" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/rv_item_repo.xml" value="0.4" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/layout/rv_item_user.xml" value="0.3829787234042553" />
+        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/menu/detail_menu.xml" value="0.24322916666666666" />
+        <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/menu/home_menu.xml" value="0.24322916666666666" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="..\:/Users/dionk/AndroidStudioProjects/GithubUserApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1115" />
       </map>

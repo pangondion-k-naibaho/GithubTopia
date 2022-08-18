@@ -43,55 +43,24 @@
             card_view:layout_constraintStart_toEndOf="@+id/iv_itemuser_pic"
             card_view:layout_constraintTop_toTopOf="@+id/iv_itemuser_pic" />
 
+        <ImageView
+            android:id="@+id/iv_icItemFollowing"
+            android:layout_width="24dp"
+            android:layout_height="19dp"
+            android:src="@drawable/ic_star_yellow"
+            card_view:layout_constraintBottom_toBottomOf="@+id/iv_itemuser_pic"
+            card_view:layout_constraintStart_toStartOf="@+id/tv_itemuser_fullname"
+            card_view:layout_constraintTop_toBottomOf="@+id/tv_itemuser_fullname" />
 
-        <!--<TextView
-            android:id="@+id/tv_itemuser_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_toEndOf="@id/iv_itemuser_pic"
-            android:gravity="center"
-            android:text="@string/example_username"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintHorizontal_bias="0.147"
-            card_view:layout_constraintStart_toEndOf="@+id/iv_itemuser_pic"
-            card_view:layout_constraintTop_toBottomOf="@+id/tv_itemuser_fullname" />-->
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:orientation="horizontal"
-            card_view:layout_constraintHorizontal_bias="0.140"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/iv_itemuser_pic"
-            card_view:layout_constraintTop_toBottomOf="@+id/tv_itemuser_fullname">
-
-            <ImageView
-                android:id="@+id/iv_icItemFollowing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_star_yellow"
-                />
-
-            <TextView
-                android:id="@+id/tv_itemuser_countfollower"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/example_countfollower"/>
-
-        </LinearLayout>
-        <!--<TextView
+        <TextView
             android:id="@+id/tv_itemuser_countfollower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:text="@string/example_countfollower"
             card_view:layout_constraintBottom_toBottomOf="@+id/iv_itemuser_pic"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintHorizontal_bias="0.117"
-            card_view:layout_constraintStart_toEndOf="@+id/iv_itemuser_pic"
-            card_view:layout_constraintTop_toBottomOf="@+id/tv_itemuser_fullname" />-->
+            card_view:layout_constraintStart_toEndOf="@+id/iv_icItemFollowing"
+            card_view:layout_constraintTop_toBottomOf="@+id/tv_itemuser_fullname" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

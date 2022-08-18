@@ -2,41 +2,62 @@ package com.dionkn.githubuserapp
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.RelativeLayout
 import androidx.activity.viewModels
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
+import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.dionkn.githubuserapp.Model.Adapter.DetailFragmentAdapter
-import com.dionkn.githubuserapp.Model.Adapter.ListUserRepoAdapter
-import com.dionkn.githubuserapp.Model.Class.GithubUser
-import com.dionkn.githubuserapp.Model.Class.UserRepo
 import com.dionkn.githubuserapp.Model.Item.PopupDialogListener
 import com.dionkn.githubuserapp.Model.Item.showPopupDialog
 import com.dionkn.githubuserapp.Model.Response.UserGithubResponse
+import com.dionkn.githubuserapp.Util.SettingPreferences
+import com.dionkn.githubuserapp.Util.ViewModelFactory
 import com.dionkn.githubuserapp.ViewModel.DetailViewModel
+import com.dionkn.githubuserapp.ViewModel.FavoriteViewModel
+import com.dionkn.githubuserapp.ViewModel.SettingViewModel
 import com.dionkn.githubuserapp.databinding.ActivityDetailBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class DetailActivity : AppCompatActivity() {
     private val TAG = DetailActivity::class.java.simpleName
-    private lateinit var binding : ActivityDetailBinding
-    private lateinit var deliveredUsername : String
+    private var _binding : ActivityDetailBinding?= null
+    private val binding get() = _binding!!
+    private lateinit var deliveredUser: UserGithubResponse
+    private var deliveredState : Boolean = false
     private val detailViewModel by viewModels<DetailViewModel>()
 
+    private var isFavorite: Boolean = false
+    private lateinit var favoriteViewModel: FavoriteViewModel
+
+    private lateinit var settingViewModel: SettingViewModel
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDetailBinding.inflate(layoutInflater)
+        _binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setProgressBarColor()
+
+        favoriteViewModel = ViewModelProvider(this)[FavoriteViewModel::class.java]
 
         detailViewModel.isLoading.observe(this, {
             setUpLoading(it)
@@ -46,14 +67,86 @@ class DetailActivity : AppCompatActivity() {
             setUpWarning(it)
         })
 
-        setupActionBar()
-        initBundle()
+        deliveredUser = intent.getParcelableExtra<UserGithubResponse>(EXTRA_GITHUB_USER) as UserGithubResponse
+        deliveredUser?.login.let {
+            getUser(deliveredUser)
+        }
+
+        deliveredState = intent.extras?.getBoolean(EXTRA_STATE)!!
+
+//        setupActionBar()
+//        initBundle()
+        setStatusFavorite(deliveredUser)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    private fun setProgressBarColor(){
+        val pref = SettingPreferences.getInstance(dataStore)
+        settingViewModel = ViewModelProvider(this, ViewModelFactory(pref))[SettingViewModel::class.java]
+        settingViewModel.getThemeSettings().observe(this, { isDarkMode ->
+            if(isDarkMode){
+                //ProgressBar
+                binding.pbDetail.indeterminateDrawable.colorFilter = PorterDuffColorFilter(
+                    ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.MULTIPLY)
+
+                //TabLayout
+                binding.tlDetailUser.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.white))
+                binding.tlDetailUser.setTabTextColors(ContextCompat.getColor(this, R.color.grey),ContextCompat.getColor(this, R.color.white))
+            }else{
+                //ProgressBar
+                binding.pbDetail.indeterminateDrawable.colorFilter = PorterDuffColorFilter(
+                    ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.MULTIPLY)
+
+                //TabLayout
+                binding.tlDetailUser.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.black))
+                binding.tlDetailUser.setTabTextColors(ContextCompat.getColor(this, R.color.grey),ContextCompat.getColor(this, R.color.black))
+            }
+        })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val menuInflater = menuInflater
+        menuInflater.inflate(R.menu.detail_menu, menu)
+
+        val item: MenuItem = menu!!.findItem(R.id.menu_favorite_user)
+        if(isFavorite){
+            item.setIcon(R.drawable.ic_favorite_full)
+        }else{
+            item.setIcon(R.drawable.ic_favorite_not_full)
+        }
+        return deliveredState
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean{
+        return when(item.itemId){
+            R.id.menu_favorite_user->{
+                if(isFavorite){
+                    item.setIcon(R.drawable.ic_favorite_not_full)
+                    isFavorite = false
+                    deliveredUser.id?.let { favoriteViewModel.removeFavoritedUser(it) }
+                    displaySnackbar("User removed from favorite user...")
+                }else{
+                    item.setIcon(R.drawable.ic_favorite_full)
+                    isFavorite = true
+                    favoriteViewModel.addToFavorite(deliveredUser)
+                    displaySnackbar("User added to favorite user...")
+                }
+                true
+            }
+            else -> true
+        }
     }
 
     companion object{
         const val EXTRA_GITHUB_USER = "EXTRA_GITHUB_USER"
-        fun newIntent(context: Context, usernameDelivered: String) : Intent = Intent(context, DetailActivity::class.java)
-            .putExtra(EXTRA_GITHUB_USER, usernameDelivered)
+        const val EXTRA_STATE = "EXTRA_STATE"
+        fun newIntent(context: Context, userDelivered: UserGithubResponse, stateDelivered: Boolean) : Intent = Intent(context, DetailActivity::class.java)
+            .putExtra(EXTRA_GITHUB_USER, userDelivered)
+            .putExtra(EXTRA_STATE, stateDelivered)
     }
 
 
@@ -66,20 +159,11 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            android.R.id.home ->{
-                finish()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     private fun initBundle(){
-        deliveredUsername = intent.getStringExtra(EXTRA_GITHUB_USER)!!
-        Log.d(TAG, "deliveredUsername: ${deliveredUsername}")
-        getUser(deliveredUsername)
+        deliveredUser = intent.getParcelableExtra<UserGithubResponse>(EXTRA_GITHUB_USER) as UserGithubResponse
+        Log.d(TAG, "deliveredUsername: ${deliveredUser}")
+        getUser(deliveredUser)
     }
 
     private fun setUpLoading(isLoading: Boolean){
@@ -101,8 +185,8 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun getUser(userName: String){
-        detailViewModel.getDetailUser(userName)
+    private fun getUser(user: UserGithubResponse){
+        detailViewModel.getDetailUser(user.login)
         detailViewModel.detailUser.observe(this, { user ->
            setUpDisplay(user)
         })
@@ -141,6 +225,17 @@ class DetailActivity : AppCompatActivity() {
             TabLayoutMediator(tlDetailUser, vpDetailUser, false, true){ tab, position ->
                 tab.text = arrayTitle[position]
             }.attach()
+        }
+    }
+
+    private fun displaySnackbar(text: String){
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun setStatusFavorite(userGithub: UserGithubResponse){
+        CoroutineScope(Dispatchers.IO).launch {
+            val count = userGithub.id.let { favoriteViewModel.isFavoritedUser(it) }
+            isFavorite = count!! > 0
         }
     }
 

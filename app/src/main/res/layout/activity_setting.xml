@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".SettingActivity">
+
+    <TextView
+        android:id="@+id/tvSetting1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/repo_name"
+        android:textSize="20sp"
+        android:text="@string/general_settings" />
+
+    <TextView
+        android:id="@+id/tvSetting2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        android:drawableLeft="@drawable/ic_dark_mode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSetting1"
+        android:text="@string/dark_mode"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchSetting1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOff="@string/switch_off"
+        android:textOn="@string/switch_on"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSetting2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvSetting2"/>
+
+    <TextView
+        android:id="@+id/tvSetting3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about"
+        android:textColor="@color/repo_name"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/switchSetting1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tvSetting2"
+        app:layout_constraintTop_toBottomOf="@+id/tvSetting2"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/ivSetting1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/octocat"
+        app:layout_constraintStart_toStartOf="@+id/tvSetting3"
+        app:layout_constraintTop_toBottomOf="@+id/tvSetting3" />
+
+    <TextView
+        android:id="@+id/tvSetting4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_title"
+        app:layout_constraintEnd_toEndOf="@+id/tvSetting3"
+        app:layout_constraintStart_toEndOf="@+id/ivSetting1"
+        app:layout_constraintTop_toTopOf="@+id/ivSetting1" />
+
+    <TextView
+        android:id="@+id/tvSetting5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_desc"
+        app:layout_constraintBottom_toBottomOf="@+id/ivSetting1"
+        app:layout_constraintEnd_toEndOf="@+id/tvSetting3"
+        app:layout_constraintStart_toEndOf="@+id/ivSetting1"
+        app:layout_constraintTop_toBottomOf="@+id/tvSetting4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dionkn.githubuserapp.Model.Response.UserGithubResponse
-import com.dionkn.githubuserapp.Networking.ApiConfig
+import com.dionkn.githubuserapp.Data.Remote.ApiConfig
 import retrofit2.Call
 import retrofit2.Response
 
@@ -21,6 +21,7 @@ class DetailViewModel: ViewModel() {
     val isFail: LiveData<Boolean> = _isFail
 
      fun getDetailUser(deliveredUsername: String){
+         _isLoading.value = true
         val client = ApiConfig.getApiService().getDetailUsers(deliveredUsername)
         client.enqueue(object: retrofit2.Callback<UserGithubResponse>{
             override fun onResponse(

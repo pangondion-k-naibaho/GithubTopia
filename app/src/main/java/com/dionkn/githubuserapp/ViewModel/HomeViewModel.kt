@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dionkn.githubuserapp.Model.Response.SearchedUserResponse
 import com.dionkn.githubuserapp.Model.Response.UserGithubResponse
-import com.dionkn.githubuserapp.Networking.ApiConfig
+import com.dionkn.githubuserapp.Data.Remote.ApiConfig
 import retrofit2.Call
 import retrofit2.Response
 
@@ -30,6 +30,7 @@ class HomeViewModel: ViewModel() {
     }
 
     fun getUserGithub(){
+        _isLoading.value = true
         val client1 = ApiConfig.getApiService().getGithubUsers()
         client1.enqueue(object: retrofit2.Callback<List<UserGithubResponse>>{
             override fun onResponse(
@@ -57,6 +58,7 @@ class HomeViewModel: ViewModel() {
     }
 
     fun getSearchedUser(deliveredString: String){
+        _isLoading.value = true
         val client = ApiConfig.getApiService().getSearchedUser(deliveredString)
         client.enqueue(object: retrofit2.Callback<SearchedUserResponse>{
             override fun onResponse(
@@ -68,12 +70,14 @@ class HomeViewModel: ViewModel() {
                     _listSearchedUser.value = response.body()?.items
                     Log.d(TAG, "Success")
                 }else{
+                    _isFail.value = true
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<SearchedUserResponse>, t: Throwable) {
                 _isLoading.value = false
+                _isFail.value = true
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
 

@@ -1,15 +1,19 @@
 package com.dionkn.githubuserapp.Model.Response
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Entity(tableName = "favorited_user")
 data class UserGithubResponse(
     @field:SerializedName("login")
     var login : String = "",
 
     @field:SerializedName("id")
+    @PrimaryKey(autoGenerate = false)
     var id : Long = 0,
 
     @field:SerializedName("node_id")
